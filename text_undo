@@ -1,0 +1,57 @@
+class TextOperation:
+  def __init__(self, operation_type, character = None):
+      self.operation_type = operation_type
+      self.character = character
+
+# Initialize empty string & history to empty list
+class TextEditor:
+  def __init__(self):
+      self.text = ""          
+      self.history = []       
+
+# Add letter to text & record in history
+  def add_text(self, character):
+      self.text += character
+      self.history.append(TextOperation('add', character))
+      self.display_text()
+
+# Check for text, delete last character & record in history
+  def delete_text(self):
+      if self.text:
+          deleted_char = self.text[-1]
+          self.text = self.text[:-1]
+          self.history.append(TextOperation('delete', deleted_char))
+          self.display_text()
+      else:
+          print("No text to delete")
+
+# Undo last operation in history, whether addition or deletion
+  def undo(self):
+      if self.history: 
+          last_operation = self.history.pop()
+          if last_operation.operation_type == 'add':
+              self.text = self.text[:-1]  
+          elif last_operation.operation_type == 'delete':
+              self.text += last_operation.character  
+          self.display_text()
+      else:
+          print("Nothing to undo")
+
+  def display_text(self):
+      print("Current text:", self.text)
+
+editor = TextEditor()
+editor.add_text('H')
+editor.add_text('e')
+editor.add_text('l')
+editor.add_text('l')
+editor.add_text('o')
+editor.delete_text()
+editor.undo()  
+editor.undo() 
+editor.undo()  
+editor.undo()  
+editor.undo()  
+editor.undo()  
+editor.undo()  # Try to undo when no operations are left
+editor.delete_text()  # Try to delete when list is empty
